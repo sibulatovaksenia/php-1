@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Абоненти</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-family: Arial, sans-serif;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #e0a1d7;
+            transition: background-color 0.3s;
+        }
+
+        th {
+            background-color: #f8e2f4;
+            font-weight: bold;
+            color: #5a3d56;
+        }
+
+        tr:hover {
+            background-color: #e3a8d7;
+        }
+
+        .filters {
+            display: flex;
+            justify-content: space-evenly;
+            width: 100vw;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 10px 0;
+        }
+
+        .filter-input {
+            padding: 10px;
+            border: 1px solid #e0a1d7;
+            font-size: 14px;
+            width: 200px;
+            max-width: 100%;
+            background-color: #fce4f1;
+        }
+
+        .filter-button {
+            padding: 10px 15px;
+            background-color: #f6aad9;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border-radius: 5px;
+        }
+
+        .filter-button:hover {
+            background-color: #f06bb4;
+        }
+
+        form {
+            background-color: #f9e6f7;
+            padding: 15px;
+            border: 1px solid #f1b5d3;
+        }
+
+        h1 {
+            padding: 15px;
+            background-color: #f8e2f4;
+            color: #5a3d56;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #5a3d56;
+            cursor: pointer;
+        }
+
+        label:hover {
+            color: #f06bb4;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #f6aad9;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background-color: #f06bb4;
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            background-color: #f06bb4;
+            transform: translateY(0);
+        }
+    </style>
+
+</head>
+
+<body>
+    <h1>Список абонентів</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Номер телефон</th>
+                <th>Домашня адреса</th>
+                <th>Власник</th>
+                <th>Сумарна тривалість розмов</th>
+                <th>Рахунок</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($filteredAbonents as $abonent) : ?>
+                <tr>
+                    <td><?= $abonent['phone_number']; ?></td>
+                    <td><?= $abonent['address']; ?></td>
+                    <td><?= $abonent['owner']; ?></td>
+                    <td><?= $abonent['call_duration']; ?></td>
+                    <td><?= $abonent['bill']; ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+
+    <div class="filters">
+        <div>
+            <h1>Фільтрація Абонентів</h1>
+            <form action="" method="get">
+                <label for="owner">Власник:</label><br>
+                <input type="text" id="owner" name="owner" required><br><br>
+
+                <label for="minCall">Мінімальна тривальсть розмов:</label><br>
+                <input type="number" id="minCall" name="minCall" min="0" required><br><br>
+
+                <button type="submit">Фільтрувати</button>
+            </form>
+        </div>
+        <div>
+            <h1>Додати нового абонента</h1>
+            <form method="post" action="">
+                <label for="phone_number">Номер телефон:</label><br>
+                <input type="text" id="phone_number" name="phone_number" required><br><br>
+
+                <label for="address">Адреса:</label><br>
+                <input type="text" id="address" name="address" required><br><br>
+
+                <label for="owner">Власник:</label><br>
+                <input type="text" id="owner" name="owner" required><br><br>
+
+                <label for="call_duration">Сумарна тривалість розмов:</label><br>
+                <input type="number" id="call_duration" name="call_duration" min="0" required><br><br>
+
+                <label for="bill">Рахунок:</label><br>
+                <input type="text" id="bill" name="bill" required><br><br>
+
+                <button type="submit">Додати</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
