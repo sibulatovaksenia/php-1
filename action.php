@@ -11,6 +11,33 @@ function filteredAbonents($abonents, $owner, $minCall)
     return $filteredAbonents;
 }
 
+function saveAbonentsToFile($filename, $abonents)
+{
+    $json_data = json_encode($abonents, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    file_put_contents($filename, $json_data);
+}
+
+function loadAbonentsFromFile($filename)
+{
+    if (file_exists($filename)) {
+        $json_data = file_get_contents($filename);
+        return json_decode($json_data, true);
+    }
+    return [];
+}
+
+$filename = 'abonents.json';
+$abonents = loadAbonentsFromFile($filename);
+
+if (
+    array_key_exists('owner', $_GET) && !empty($_GET['owner']) &&
+    array_key_exists('minCall', $_GET) && !empty($_GET['minCall'])
+) {
+    $owner = $_GET['owner'];
+    $minCall = (int)$_GET['minCall'];
+    $abonents = filteredAbonents($abonents, $owner, $minCall);
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['owner']) && isset($_GET['minCall'])) {
     $owner = $_GET['owner'];
     $minCall = (int)$_GET['minCall'];
@@ -33,12 +60,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $call_duration = (int)$_POST['call_duration'];
         $bill = (int)$_POST['bill'];
 
-
         $abonentExists = false;
 
         foreach ($abonents as $key => $abonent) {
             if ($abonent['phone_number'] == $phone_number) {
-
                 $abonents[$key] = [
                     'phone_number' => $phone_number,
                     'address' => $address,
@@ -60,5 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'bill' => $bill,
             ];
         }
+
+        saveAbonentsToFile($filename, $abonents);
     }
 }
